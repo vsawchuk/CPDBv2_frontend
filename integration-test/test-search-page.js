@@ -944,13 +944,17 @@ describe('Search Page', function () {
     });
   });
 
-  describe('TRRPreviewPane', function () {
+  describe.only('TRRPreviewPane', function () {
     beforeEach(function () {
       searchPage.input.waitForDisplayed();
       searchPage.input.setValue('2004/04/23');
       searchPage.dateTRRResultsSection.firstResultText.waitForDisplayed();
       searchPage.dateTRRResultsSection.firstResultText.click();
       searchPage.trrPreviewPaneSection.wrapper.waitForDisplayed();
+    });
+
+    afterEach(function () {
+      console.log(searchPage.resultsWrapper.getHTML());
     });
 
     it('should render enough content', function () {

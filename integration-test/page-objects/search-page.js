@@ -114,6 +114,7 @@ class SearchPage extends Page {
   constructor() {
     super();
     this.prepareElementGetters({
+      resultsWrapper: '//div[@className="result-wrapper"]',
       searchBreadcrumb: '//*[contains(@class, "breadcrumb-item")][2]',
       input: '.search-box-text-input',
       suggestionGroup: '.test--suggestion-group',
