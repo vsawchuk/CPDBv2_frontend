@@ -1,5 +1,6 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
+import { spy } from 'sinon';
 
 import JumpyMotion from 'components/animation/jumpy-motion';
 
@@ -36,5 +37,16 @@ describe('JumpyMotion component', function () {
       wrapper.state('startMotion').should.be.true();
       done();
     }, 20);
+  });
+
+  it('should clear timeout when unmount', function () {
+    const wrapper = mount(<JumpyMotion isActive={ false }>abc</JumpyMotion>);
+    wrapper.setProps({ isActive: true });
+
+    const clearTimeoutSpy = spy(window, 'clearTimeout');
+    const timeout = wrapper.instance().timeout;
+
+    wrapper.unmount();
+    clearTimeoutSpy.should.be.calledWith(timeout);
   });
 });

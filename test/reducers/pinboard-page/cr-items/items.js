@@ -109,86 +109,23 @@ describe('crItemsReducer', function () {
     ).should.deepEqual([{ 'crid': '1' }, { 'crid': '3' }]);
   });
 
-  it('should handle REMOVE_ITEM_IN_PINBOARD_PAGE with not exist crid', function () {
+  it('should handle COMPLETE_REMOVE_ITEM_FROM_PINBOARD with payload.type is not CR', function () {
     crItemsReducer(
       [{
         'crid': '1',
       }, {
         'crid': '2',
-        'incident_date': 'Apr 4, 2017',
-        'most_common_category': 'Use Of Force',
-        'point': { 'lon': 1.0, 'lat': 2.0 },
-      }],
-      {
-        type: constants.REMOVE_ITEM_IN_PINBOARD_PAGE,
-        payload: {
-          type: 'CR',
-          id: '3',
-        },
-      }
-    ).should.deepEqual([{
-      'crid': '1',
-    }, {
-      'crid': '2',
-      'incident_date': 'Apr 4, 2017',
-      'most_common_category': 'Use Of Force',
-      'point': { 'lon': 1.0, 'lat': 2.0 },
-    }]);
-  });
-
-  it('should handle REMOVE_ITEM_IN_PINBOARD_PAGE and do nothing if type is not CR', function () {
-    crItemsReducer(
-      [{
-        'crid': '1',
       }, {
-        'crid': '2',
-        'incident_date': 'Apr 4, 2017',
-        'most_common_category': 'Use Of Force',
-        'point': { 'lon': 1.0, 'lat': 2.0 },
+        'crid': '3',
       }],
       {
-        type: constants.REMOVE_ITEM_IN_PINBOARD_PAGE,
+        type: constants.COMPLETE_REMOVE_ITEM_FROM_PINBOARD,
         payload: {
-          type: 'OFFICER',
+          type: 'TRR',
           id: '2',
         },
       }
-    ).should.deepEqual([{
-      'crid': '1',
-    }, {
-      'crid': '2',
-      'incident_date': 'Apr 4, 2017',
-      'most_common_category': 'Use Of Force',
-      'point': { 'lon': 1.0, 'lat': 2.0 },
-    }]);
-  });
-
-  it('should handle REMOVE_ITEM_IN_PINBOARD_PAGE with API_ONLY mode', function () {
-    crItemsReducer(
-      [{
-        'crid': '1',
-      }, {
-        'crid': '2',
-        'incident_date': 'Apr 4, 2017',
-        'most_common_category': 'Use Of Force',
-        'point': { 'lon': 1.0, 'lat': 2.0 },
-      }],
-      {
-        type: constants.REMOVE_ITEM_IN_PINBOARD_PAGE,
-        payload: {
-          type: 'CR',
-          id: '2',
-          keepUndoCard: true,
-        },
-      }
-    ).should.deepEqual([{
-      'crid': '1',
-    }, {
-      'crid': '2',
-      'incident_date': 'Apr 4, 2017',
-      'most_common_category': 'Use Of Force',
-      'point': { 'lon': 1.0, 'lat': 2.0 },
-    }]);
+    ).should.deepEqual([{ 'crid': '1' }, { 'crid': '2' }, { 'crid': '3' }]);
   });
 
   it('should handle ORDER_PINBOARD', function () {

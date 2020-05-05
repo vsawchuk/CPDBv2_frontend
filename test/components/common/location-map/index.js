@@ -1,6 +1,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import { spy } from 'sinon';
+import { spy, match } from 'sinon';
 
 import LocationMap from 'components/common/location-map';
 
@@ -57,5 +57,13 @@ describe('LocationMap component', function () {
     const wrapper = mount(<LocationMap lng={ 0 } lat={ 0 } customMarkerClassName='custom-marker' />);
 
     wrapper.instance().marker.element.className.should.equal('custom-marker');
+  });
+
+  it('should call removeEventListener when unmount', function () {
+    const wrapper = mount(<LocationMap lng={ 1 } lat={ 1 } />);
+    const removeEventListenerSpy = spy(window, 'removeEventListener');
+
+    wrapper.unmount();
+    removeEventListenerSpy.should.be.calledWith('scroll', match.any);
   });
 });

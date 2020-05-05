@@ -13,6 +13,8 @@ import config from 'config';
 import App from 'components/app';
 import RootReducer from 'reducers/root-reducer';
 import OfficerPageContainer from 'containers/officer-page';
+import * as LayeredKeyBinding from 'utils/layered-key-binding';
+import { ALPHA_NUMBERIC } from 'utils/constants';
 
 
 describe('App component', function () {
@@ -152,6 +154,26 @@ describe('App component', function () {
 
       const app = wrapper.find(App);
       app.getDOMNode().className.should.not.containEql('pinboard-disabled');
+    });
+  });
+
+  it('should unbind events when unmount', function () {
+    const unbindSpy = spy(LayeredKeyBinding, 'unbind');
+
+    const wrapper = mount(
+      <Provider store={ store }>
+        <MemoryRouter>
+          <App location={ location }>
+            <ChildComponent/>
+          </App>
+        </MemoryRouter>
+      </Provider>
+    );
+
+    wrapper.unmount();
+    unbindSpy.should.be.calledWith('esc');
+    ALPHA_NUMBERIC.forEach(function (letter) {
+      unbindSpy.should.be.calledWith(letter);
     });
   });
 });

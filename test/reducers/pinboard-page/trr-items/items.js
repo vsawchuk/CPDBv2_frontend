@@ -35,6 +35,19 @@ describe('Pinboard trrItemsReducer', function () {
     ).should.deepEqual([{ 'id': 1 }, { 'id': 3 }]);
   });
 
+  it('should handle COMPLETE_REMOVE_ITEM_FROM_PINBOARD with payload.type is not TRR', function () {
+    trrItemsReducer(
+      [{ 'id': 1 }, { 'id': 2 }, { 'id': 3 }],
+      {
+        type: constants.COMPLETE_REMOVE_ITEM_FROM_PINBOARD,
+        payload: {
+          type: 'CR',
+          id: '2',
+        },
+      }
+    ).should.deepEqual([{ 'id': 1 }, { 'id': 2 }, { 'id': 3 }]);
+  });
+
   it('should handle REMOVE_ITEM_IN_PINBOARD_PAGE with not exist trr id', function () {
     trrItemsReducer(
       [{ 'id': 1 }, { 'id': 2 }],

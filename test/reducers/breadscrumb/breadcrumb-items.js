@@ -64,6 +64,13 @@ describe('breadcrumbItems', function () {
         },
       }).should.eql(['/search/', '/officer/123/']);
     });
+
+    it('should handle empty pathname', function () {
+      breadcrumbItems(['/search/'], {
+        type: LOCATION_CHANGE,
+        payload: {},
+      }).should.eql(['/search/']);
+    });
   });
 
   describe('handle UPDATE_PATH_NAME', function () {
