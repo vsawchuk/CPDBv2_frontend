@@ -117,6 +117,10 @@ export default function RouterRoot(props) {
         ] }
         component={ SocialGraphContainer }/>
       <Route
+        exact={ true }
+        path={ '/test-social-graph' }
+        component={ SocialGraphContainer }/>
+      <Route
         path={ editRouterPath(TRACKER_DOCUMENTS_OVERVIEW_PATH) }
         component={ DocumentsOverviewContainer } />
       {

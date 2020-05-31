@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import testData from './data/testData';
 
 import {
   getSocialGraphTimelineIdx,
@@ -20,13 +21,13 @@ import {
 
 
 function mapStateToProps(state, ownProps) {
-  const graphData = graphDataSelector(state);
+  //const graphData = graphDataSelector(state);
   return {
     performResizeGraph: ownProps.performResizeGraph,
     customRightControlButton: ownProps.customRightControlButton,
-    officers: graphData.officers,
-    coaccusedData: graphData.coaccusedData,
-    listEvent: graphData.listEvent,
+    officers: testData.officers, //graphData.officers,
+    coaccusedData: testData.edges, //graphData.coaccusedData,
+    listEvent: testData.listEvents, //graphData.listEvent,
     timelineIdx: getSocialGraphTimelineIdx(state),
     refreshIntervalId: getSocialGraphRefreshIntervalId(state),
     selectedOfficerId: getSelectedOfficerId(state),
