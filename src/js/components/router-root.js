@@ -118,7 +118,7 @@ export default function RouterRoot(props) {
         component={ SocialGraphContainer }/>
       <Route
         exact={ true }
-        path={ '/test-social-graph' }
+        path={ '/test-social-graph/precinct/:precinctId' }
         component={ SocialGraphContainer }/>
       <Route
         path={ editRouterPath(TRACKER_DOCUMENTS_OVERVIEW_PATH) }

@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import testData from './data/testData';
+import testData from './data/testDataWithPrecinct';
 
 import {
   getSocialGraphTimelineIdx,
@@ -19,15 +19,44 @@ import {
   getRequesting,
 } from 'selectors/social-graph-page/network';
 
+function getTestCoaccused(precinct) {
+  return testData.edges.filter(edge => edge.precinct === precinct);
+}
+
+
+function getTestOfficers(precinct) {
+  const edges = getTestCoaccused(precinct);
+  const officersMap = {};
+  testData.officers.forEach(officer => officersMap[officer.id] = officer);
+  const officersToReturn = [];
+  edges.forEach(edge => {
+    if (officersMap[edge.officerId1]) {
+      officersToReturn.push(officersMap[edge.officerId1]);
+      officersMap[edge.officerId1] = null;
+    }
+    if (officersMap[edge.officerId2]) {
+      officersToReturn.push(officersMap[edge.officerId2]);
+      officersMap[edge.officerId2] = null;
+    }
+  });
+  return officersToReturn;
+}
+
 
 function mapStateToProps(state, ownProps) {
-  //const graphData = graphDataSelector(state);
+  const isTest = window.location.pathname.includes('/test-social-graph');
+  let precinct = "";
+  if (isTest) {
+    const splitPath = window.location.pathname.split('/');
+    precinct = splitPath[splitPath.length - 1];
+  }
+  const graphData = graphDataSelector(state);
   return {
     performResizeGraph: ownProps.performResizeGraph,
     customRightControlButton: ownProps.customRightControlButton,
-    officers: testData.officers, //graphData.officers,
-    coaccusedData: testData.edges, //graphData.coaccusedData,
-    listEvent: testData.listEvents, //graphData.listEvent,
+    officers: isTest ? getTestOfficers(precinct) : graphData.officers,
+    coaccusedData: isTest ? getTestCoaccused(precinct) : graphData.coaccusedData,
+    listEvent: isTest ? testData.listEvents : graphData.listEvent,
     timelineIdx: getSocialGraphTimelineIdx(state),
     refreshIntervalId: getSocialGraphRefreshIntervalId(state),
     selectedOfficerId: getSelectedOfficerId(state),
