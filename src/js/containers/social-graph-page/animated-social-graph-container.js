@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import testData from './data/testDataWithPrecinct';
+import testData from './data/testDataWithPrecinctAndComplaintCount-badgeId767';
 
 import {
   getSocialGraphTimelineIdx,
@@ -20,6 +20,9 @@ import {
 } from 'selectors/social-graph-page/network';
 
 function getTestCoaccused(precinct) {
+  if (precinct == null) {
+    return testData.edges;
+  }
   return testData.edges.filter(edge => edge.precinct === precinct);
 }
 
@@ -45,8 +48,8 @@ function getTestOfficers(precinct) {
 
 function mapStateToProps(state, ownProps) {
   const isTest = window.location.pathname.includes('/test-social-graph');
-  let precinct = "";
-  if (isTest) {
+  let precinct = null;
+  if (isTest && window.location.pathname.includes('precinct')) {
     const splitPath = window.location.pathname.split('/');
     precinct = splitPath[splitPath.length - 1];
   }
