@@ -6232,6 +6232,11 @@ jake@^10.6.1:
     filelist "^1.0.1"
     minimatch "^3.0.4"
 
+jquery-csv@^1.0.11:
+  version "1.0.11"
+  resolved "https://registry.yarnpkg.com/jquery-csv/-/jquery-csv-1.0.11.tgz#1eeb689d4a11e9467c31b9bb426260b8acd326a6"
+  integrity sha512-KDPc3wFLTFO68p/4IqsODZCjBp+y9axDa/pr36pDKrWk6yyHf8Nk1FqAGXvaUb6H7J1zJSYszABIFj0a40QXRA==
+
 js-base64@^2.1.8:
   version "2.5.2"
   resolved "https://registry.yarnpkg.com/js-base64/-/js-base64-2.5.2.tgz#313b6274dda718f714d00b3330bbae6e38e90209"

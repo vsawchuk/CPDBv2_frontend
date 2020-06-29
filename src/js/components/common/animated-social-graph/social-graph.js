@@ -154,7 +154,8 @@ export default class SocialGraph extends Component {
       .nodes(this.data.nodes)
       .friction(0.3)
       .links(this.data.links)
-      .on('tick', this.tick);
+      .on('tick', this.tick)
+      .gravity(1);
 
     this.resizeGraph();
 
@@ -200,6 +201,11 @@ export default class SocialGraph extends Component {
           color: officer.visualTokenBackground,
           degree: 0,
         };
+        if (officer.fixed) {
+          officerData.fixed = true;
+          officerData.x = officer.x;
+          officerData.y = officer.y;
+        }
         nodes.push(officerData);
         officerHash[officer.id] = index;
       });
@@ -249,7 +255,7 @@ export default class SocialGraph extends Component {
       this.data.nodes[link.source].degree += 1;
       this.data.nodes[link.target].degree += 1;
 
-      link.colorGroup = Math.ceil((index + 1) * NUMBER_OF_LINK_GROUP_COLORS / linksCount);
+      link.colorGroup = 0; //Math.ceil((index + 1) * NUMBER_OF_LINK_GROUP_COLORS / linksCount);
     });
 
     const sortedNodes = orderBy(this.data.nodes, ['degree', 'fname'], ['desc', 'asc']);

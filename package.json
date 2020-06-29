@@ -144,6 +144,7 @@
     "fbemitter": "^2.1.1",
     "hammerjs": "^2.0.8",
     "ismobilejs": "^0.4.0",
+    "jquery-csv": "^1.0.11",
     "js-cookie": "^2.1.3",
     "lodash": "^4.17.15",
     "mapbox-gl": "^1.9.1",

@@ -26,26 +26,6 @@ function getTestCoaccused(precinct) {
   return testData.edges.filter(edge => edge.precinct === precinct);
 }
 
-
-function getTestOfficers(precinct) {
-  const edges = getTestCoaccused(precinct);
-  const officersMap = {};
-  testData.officers.forEach(officer => officersMap[officer.id] = officer);
-  const officersToReturn = [];
-  edges.forEach(edge => {
-    if (officersMap[edge.officerId1]) {
-      officersToReturn.push(officersMap[edge.officerId1]);
-      officersMap[edge.officerId1] = null;
-    }
-    if (officersMap[edge.officerId2]) {
-      officersToReturn.push(officersMap[edge.officerId2]);
-      officersMap[edge.officerId2] = null;
-    }
-  });
-  return officersToReturn;
-}
-
-
 function mapStateToProps(state, ownProps) {
   const isTest = window.location.pathname.includes('/test-social-graph');
   let precinct = null;
@@ -57,7 +37,7 @@ function mapStateToProps(state, ownProps) {
   return {
     performResizeGraph: ownProps.performResizeGraph,
     customRightControlButton: ownProps.customRightControlButton,
-    officers: isTest ? getTestOfficers(precinct) : graphData.officers,
+    officers: isTest ? testData.officers : graphData.officers,
     coaccusedData: isTest ? getTestCoaccused(precinct) : graphData.coaccusedData,
     listEvent: isTest ? testData.listEvents : graphData.listEvent,
     timelineIdx: getSocialGraphTimelineIdx(state),
