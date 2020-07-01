@@ -29,6 +29,7 @@ export default class SocialGraph extends Component {
     super(props);
     this.width = DEFAULT_GRAPH_WIDTH;
     this.height = DEFAULT_GRAPH_HEIGHT;
+    this.fixedOfficerIndex = -1;
 
     this.setInitialData();
   }
@@ -154,8 +155,7 @@ export default class SocialGraph extends Component {
       .nodes(this.data.nodes)
       .friction(0.3)
       .links(this.data.links)
-      .on('tick', this.tick)
-      .gravity(1);
+      .on('tick', this.tick);
 
     this.resizeGraph();
 
@@ -175,6 +175,10 @@ export default class SocialGraph extends Component {
     const chartDiv = d3.select(ReactDOM.findDOMNode(this.chart)).node();
     this.width = chartDiv.clientWidth;
     this.height = chartDiv.clientHeight;
+    if (this.fixedOfficerIndex >= 0) {
+      this.data.nodes[this.fixedOfficerIndex].x = this.width / 2;
+      this.data.nodes[this.fixedOfficerIndex].y = this.height / 2;
+    }
 
     const graphViewPortRadius = Math.min(this.width, this.height) / 2;
     const linkDistance = Math.sqrt((Math.PI * Math.pow(graphViewPortRadius, 2) / this.data.nodes.length));
@@ -202,9 +206,10 @@ export default class SocialGraph extends Component {
           degree: 0,
         };
         if (officer.fixed) {
+          this.fixedOfficerIndex = index;
           officerData.fixed = true;
-          officerData.x = officer.x;
-          officerData.y = officer.y;
+          officerData.fx = officer.x;
+          officerData.fy = officer.y;
         }
         nodes.push(officerData);
         officerHash[officer.id] = index;
@@ -237,6 +242,9 @@ export default class SocialGraph extends Component {
             target: officerIndex2,
             weight: row.accussedCount,
           };
+          // set officer color
+          this.data.nodes[officerIndex1].color = 'red';
+          this.data.nodes[officerIndex2].color = 'red';
         }
         nodesData[objKey]['className'] = (rowDate.getTime() === curDate.getTime()) ? 'current-link' : '';
       }
@@ -320,13 +328,13 @@ export default class SocialGraph extends Component {
   }
 
   _updateSelectedNodePosition() {
-    this.selectedNodeLabel.labelText
-      .attr('x', (d) => d.x + this.nodeRadius(d) + LABEL_PADDING_LEFT_RIGHT / 2 )
-      .attr('y', (d) => d.y + LABEL_PADDING_TOP_BOTTOM / 2 + 2);
-
-    this.selectedNodeLabel.box
-      .attr('x', (d) => d.x + this.nodeRadius(d))
-      .attr('y', (d) => d.y + LABEL_PADDING_TOP_BOTTOM / 2 - d.bb.height + 2);
+    // this.selectedNodeLabel.labelText
+    //   .attr('x', (d) => d.x + this.nodeRadius(d) + LABEL_PADDING_LEFT_RIGHT / 2 )
+    //   .attr('y', (d) => d.y + LABEL_PADDING_TOP_BOTTOM / 2 + 2);
+    //
+    // this.selectedNodeLabel.box
+    //   .attr('x', (d) => d.x + this.nodeRadius(d))
+    //   .attr('y', (d) => d.y + LABEL_PADDING_TOP_BOTTOM / 2 - d.bb.height + 2);
   }
 
 
@@ -418,7 +426,7 @@ export default class SocialGraph extends Component {
       this.link.on('click', this.handleEdgeClick);
     }
 
-    this.link.attr('class', (d) => `link edge-coaccusals-preview-link link-group-color-${d.colorGroup} ${d.className}`);
+    this.link.attr('class', (d) => 'link edge-coaccusals-preview-link');
 
     this.link.exit().remove();
   }
